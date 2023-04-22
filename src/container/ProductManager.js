@@ -66,7 +66,7 @@ async addProduct(newProduct) {
   try{
     this.products = await this.getAll()
     newProduct.idProduct = this.setId()
-    if(newProduct.length == 8){
+    if(newProduct){
     this.products.push(newProduct)
     await fs.promises.writeFile(this.path, JSON.stringify(this.products))
     return console.log('product added')}
@@ -99,6 +99,20 @@ async updateProduct(id, newValues) {
       console.log(err)
   }
 
+}
+
+async deleteProduct(id) {
+  try{
+    if(id >= 1){
+    let products = (await this.getAll()).filter(item => item.idProduct != id)
+    await fs.promises.writeFile(this.path, JSON.stringify(products))
+    return console.log("product deleted")}
+
+    else{ console.log("wrong params")
+    }}
+    catch (err){
+      console.log(err)   
+}
 }
 
 

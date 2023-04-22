@@ -29,8 +29,16 @@ router.post('/products', async (req,res)=>{
 )
 
 router.put('/:pid', async (req,res) => {
-    const productChanged = await product.updateProduct(req.params.pid, req.body)
+    const newProduct = pm;
+    const productChanged = await newProduct.updateProduct(req.params.pid, req.body)
     res.send(productChanged.value) 
+})
+
+
+router.delete('/product/:pid', async (req,res) => {
+    const newProduct = pm;
+    const productDeleted = await newProduct.deleteProduct(req.params.pid)
+    res.send(productDeleted) 
 })
 
 module.exports = router;
