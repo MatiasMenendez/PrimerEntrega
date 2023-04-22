@@ -1,13 +1,12 @@
 const fs = require ('fs');
 
 class ProductManager {
-//ver id autoincrementable
     constructor() {
         this.products = [];
         this.path = "./files/Products.JSON"
     }
 
-//testear
+//Bien
 setId() {
   try {
       let idProduct = 1
@@ -101,6 +100,7 @@ async updateProduct(id, newValues) {
 
 }
 
+//Bien
 async deleteProduct(id) {
   try{
     if(id >= 1){
@@ -114,8 +114,6 @@ async deleteProduct(id) {
       console.log(err)   
 }
 }
-
-
 
 }
 

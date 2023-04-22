@@ -3,7 +3,7 @@ const productManager = require('../container/ProductManager');
 const router = express.Router();
 const pm = new productManager('../files/Product.JSON');
 
-//testear
+//Bien
 router.get('/products', async (req,res) =>{
     const newProduct = pm;
     if(!req.query.limit){
@@ -13,7 +13,7 @@ router.get('/products', async (req,res) =>{
     }
 }
 )
-//testear
+//Bien
 router.get('/product/:pid', async (req,res) =>{
     const newProduct = pm;
     let Product = await newProduct.getProductById(req.params.pid)
@@ -28,13 +28,14 @@ router.post('/products', async (req,res)=>{
 }
 )
 
+//incompleto
 router.put('/:pid', async (req,res) => {
     const newProduct = pm;
     const productChanged = await newProduct.updateProduct(req.params.pid, req.body)
     res.send(productChanged.value) 
 })
 
-
+//Bien
 router.delete('/product/:pid', async (req,res) => {
     const newProduct = pm;
     const productDeleted = await newProduct.deleteProduct(req.params.pid)
