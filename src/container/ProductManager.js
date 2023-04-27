@@ -1,3 +1,4 @@
+const { error } = require('console');
 const fs = require ('fs');
 
 class ProductManager {
@@ -15,7 +16,7 @@ setId() {
       }
       return idProduct
   }
-  catch (error) {
+  catch (err) {
       console.log(err)
   }
       
@@ -60,12 +61,13 @@ catch (err) {
   console.log (err)
 }}
 
-//bien pero falta que genere error si no tiene todos los parametros
+//bien
 async addProduct(newProduct) {
   try{
     this.products = await this.getAll()
+    this.validateProperties(newProduct) 
     newProduct.idProduct = this.setId()
-    if(newProduct.length === 8){
+    if(newProduct){
     this.products.push(newProduct)
     await fs.promises.writeFile(this.path, JSON.stringify(this.products))
     return console.log('product added')}
@@ -75,28 +77,34 @@ async addProduct(newProduct) {
   }catch(err){
     console.log(err)
   }
-
 }
 
 
 
-async putProduct(id, prodMod) {
-  
-  const format = prodMod.title && prodMod.escription && prodMod.code && prodMod.price && prodMod.status && prodMod.stock && prodMod.category && prodMod.thumbnail && 
-  Object.keys(prodMod).length === 8 ? true : null;
 
-  const prodIndex = this.products.findIndex(elem => elem.idProduct === Number(id))
+  //Updates the property with value of a product with matching id  
+  async putProduct(id, newValues) {
+    try {
+        let oldProduct = (await this.getProductById(id)).value
 
-  const product = this.products.find(elem => elem.idProduct === Number(id));
+        Object.keys(newValues).forEach(properties => {
+            if (this.validateProperties(properties, oldProduct)) {
+                oldProduct[properties] = newValues[properties]
+            }
+        });
+       
+        let products = (await this.getAll()).filter(item => item.idProduct != id)
+        products.push(oldProduct)
+        await fs.promises.writeFile(this.path, JSON.stringify(products))
 
-  if (format && product) {
-      prodMod.id = this.products[prodIndex].id;
-      this.products[prodIndex] = prodMod;
-      return res.send("Producto modificado");
-  } else{
-    console.log("error")
-  }
+        return {status: 'successful', value: oldProduct}
+    }
+    catch (error) {
+        return {status: 'failed', error: `there is an invalid property trying to be modified.`}
+    }
+
 }
+
 
 
 //Bien
@@ -113,6 +121,29 @@ async deleteProduct(id) {
       console.log(err)   
 }
 }
+
+    validateProperties(product) {
+      const properties = ['title', 'description', 'price', 'thumbnail', 'code', 'stock', 'category', 'status']
+
+      for (let property in properties) {
+          if (!(properties[property] in product)) {
+              console.log("missing properties")
+          }
+      }
+
+      Object.keys(product).forEach(property => {
+          if (!(properties.includes(property))) {
+            console.log("missing properties")
+          }
+      });
+ 
+      if (product) {
+          return true
+      } 
+      else {
+          console.log("error") 
+      }
+  }
 
 }
 
