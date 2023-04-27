@@ -65,40 +65,39 @@ async addProduct(newProduct) {
   try{
     this.products = await this.getAll()
     newProduct.idProduct = this.setId()
-    if(newProduct){
+    if(newProduct.length === 8){
     this.products.push(newProduct)
     await fs.promises.writeFile(this.path, JSON.stringify(this.products))
     return console.log('product added')}
     else{
-      console.log("wrong parameters")
+      console.log(newProduct.length)
     }
   }catch(err){
     console.log(err)
   }
-}
-
-//testear
-async updateProduct(id, newValues) {
-  try {
-      let oldProduct = (await this.getProductById(idProduct)).value
-
-      Object.keys(newValues).forEach(property => {
-          if (this.validateProperty(property, oldProduct)) {
-              oldProduct[property] = newValues[property]
-          }
-      });
-     
-      let products = (await this.getProducts()).filter(item => item.idProduct != id)
-      products.push(oldProduct)
-      await fs.promises.writeFile(this.path, JSON.stringify(products))
-
-      return console.log('product updated')
-  }
-  catch (err) {
-      console.log(err)
-  }
 
 }
+
+
+
+async putProduct(id, prodMod) {
+  
+  const format = prodMod.title && prodMod.escription && prodMod.code && prodMod.price && prodMod.status && prodMod.stock && prodMod.category && prodMod.thumbnail && 
+  Object.keys(prodMod).length === 8 ? true : null;
+
+  const prodIndex = this.products.findIndex(elem => elem.idProduct === Number(id))
+
+  const product = this.products.find(elem => elem.idProduct === Number(id));
+
+  if (format && product) {
+      prodMod.id = this.products[prodIndex].id;
+      this.products[prodIndex] = prodMod;
+      return res.send("Producto modificado");
+  } else{
+    console.log("error")
+  }
+}
+
 
 //Bien
 async deleteProduct(id) {

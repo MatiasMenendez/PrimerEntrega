@@ -12,12 +12,6 @@ router.get('/cart/:cid', async (req,res) =>{
 }
 )
 
-
-
-
-
-
-
 router.get('/carts', async (req,res) =>{
     const newCart = cm;
     let carts = await newCart.getCarts()
@@ -26,8 +20,12 @@ router.get('/carts', async (req,res) =>{
 )
 
 
-
-
+//Incompleto
+router.post('/:cid/product/:pid', async (req,res)=>{
+    const newCart = cm;
+    let cartAdded = await newCart.updateCart(req.params.cid, req.params.pid)
+    res.send(cartAdded)
+})
 
 
 

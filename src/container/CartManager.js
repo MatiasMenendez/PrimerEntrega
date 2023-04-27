@@ -62,7 +62,7 @@ async getCartById(id) {
   let carts = await this.getCarts()
   carts = carts.filter(item => item.idCart == id)
   if (carts.length) {
-      return carts[0]
+      return carts[0].products
   } else { 
       console.log("product not founded")
   }
@@ -71,25 +71,9 @@ catch (err) {
   console.log (err)
 }}
 
-//Incompleto
-async addProduct(newProduct) {
-  try{
-    this.products = await this.getAll()
-    newProduct.idProduct = this.setId()
-    if(newProduct){
-    this.products.push(newProduct)
-    await fs.promises.writeFile(this.path, JSON.stringify(this.products))
-    return console.log('product added')}
-    else{
-      console.log("wrong parameters")
-    }
-  }catch(err){
-    console.log(err)
-  }
-}
-
-
 
 }
+
+
 
 module.exports = CartManager;

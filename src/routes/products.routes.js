@@ -31,8 +31,8 @@ router.post('/products', async (req,res)=>{
 //incompleto
 router.put('/:pid', async (req,res) => {
     const newProduct = pm;
-    const productChanged = await newProduct.updateProduct(req.params.pid, req.body)
-    res.send(productChanged.value) 
+    const productChanged = await newProduct.putProduct(req.params.pid, req.body)
+    res.send(productChanged) 
 })
 
 //Bien
