@@ -1,4 +1,4 @@
-const { error } = require('console');
+
 const fs = require ('fs');
 
 class ProductManager {
@@ -82,7 +82,7 @@ async addProduct(newProduct) {
 
 
 
-  //Updates the property with value of a product with matching id  
+  //incompleto
   async putProduct(id, newValues) {
     try {
         let oldProduct = (await this.getProductById(id)).value
@@ -97,18 +97,19 @@ async addProduct(newProduct) {
         products.push(oldProduct)
         await fs.promises.writeFile(this.path, JSON.stringify(products))
 
-        return {status: 'successful', value: oldProduct}
+        return console.log("product updated")
     }
-    catch (error) {
-        return {status: 'failed', error: `there is an invalid property trying to be modified.`}
+    catch (err) {
+      console.log(err)
+        }
     }
 
-}
+
 
 
 
 //Bien
-async deleteProduct(id) {
+async deleteProduct(id){
   try{
     if(id >= 1){
     let products = (await this.getAll()).filter(item => item.idProduct != id)
